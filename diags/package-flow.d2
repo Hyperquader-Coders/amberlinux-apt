@@ -1,0 +1,69 @@
+projects: Suite repositories {
+  style.stroke-dash: 3
+  kat800
+  ambrosia
+  copal
+  amberlin
+  runtime: "amberlin-runtime\n(cpu + cuda debs)"
+  odin: "amber-odin\n(+ amber-ols deb)"
+}
+
+upstream: "Upstream releases\nodin-lang/Odin · DanielGavin/ols" {
+  shape: cloud
+  style.stroke-dash: 3
+}
+upstream -> projects.odin: "monthly, sha256-verified" {style.stroke-dash: 3}
+
+projects -> dist: "make deb  (all: make refresh)" {style.bold: true}
+
+dist: "dist/*.deb" {
+  shape: page
+  tooltip: One path per package, located by `make deb-path`
+}
+
+archive: amberlinux-apt {
+  reprepro: "reprepro includedeb" {shape: rectangle}
+  db: "db/\nBerkeley DB index" {shape: cylinder}
+  key: "GPG key\n~/.gnupg" {
+    shape: hexagon
+    style.stroke-dash: 3
+  }
+  out: "out/" {
+    shape: package
+    dists: "dists/amber/\nInRelease · Release · Packages"
+    pool: "pool/main/…/*.deb"
+  }
+
+  reprepro -> db: records
+  reprepro -> out.pool: copies
+  reprepro -> out.dists: exports
+  key -> out.dists: clearsigns {style.stroke-dash: 3}
+}
+
+dist -> archive.reprepro: "make add-suite"
+
+gates: "make stage" {
+  style.fill: "#fff4e0"
+  preflight: "preflight.sh\nkey can sign?"
+  verify: "verify-client.sh\nreal apt, throwaway root\nfile:// and HTTP"
+  preflight -> verify
+}
+
+archive.out -> gates.verify: gates the upload
+
+cdn: "apt.amberlinux.org  (LIVE)" {
+  shape: cloud
+  tooltip: html_handling none — no redirect on extension-less index files
+  assets: "dists/, keyring, landing page\nstatic assets, byte-exact"
+  r2: "pool/*.deb\nR2 bucket amberlinux-apt-pool" {shape: cylinder}
+}
+
+gates.verify -> cdn: "make deploy\n(r2-sync + wrangler + live verify)" {style.bold: true}
+
+client: "User's machine" {
+  sources: "/etc/apt/sources.list.d/\namberlinux.list"
+  keyring: "/usr/share/keyrings/\namberlinux-archive-keyring.gpg"
+}
+
+cdn -> client.sources: "apt update"
+cdn -> client.keyring: "downloaded once, checked by fingerprint" {style.stroke-dash: 3}

@@ -1,0 +1,4 @@
+# dists/ and pool/ go under out/ so the publishable static tree is one directory.
+# +b/ is reprepro's basedir prefix; the Makefile passes -b $(CURDIR).
+outdir +b/out
+verbose

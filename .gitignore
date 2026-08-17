@@ -1,0 +1,15 @@
+# Generated: the published tree and reprepro's Berkeley DB index. See README.
+/out/
+/db/
+
+# Agent files are local. We do not share them.
+.r2-synced
+.wrangler/
+
+# Agent files are local and are not shared.
+.claude/
+.mcp.json
+
+# Claude config dirs, if a session ever materialises one here.
+.claude-amber/
+.credentials.json

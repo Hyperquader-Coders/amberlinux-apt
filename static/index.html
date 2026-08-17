@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Amber Linux apt archive</title>
+<style>
+  :root { color-scheme: light dark;
+          --bg: #fdf9f2; --fg: #2b2118; --accent: #b8860b; --code-bg: #f0e9dd; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1c1712; --fg: #e8ddcc; --accent: #e0a92e; --code-bg: #2a231b; }
+  }
+  body { background: var(--bg); color: var(--fg);
+         font: 16px/1.6 system-ui, sans-serif;
+         max-width: 44rem; margin: 3rem auto; padding: 0 1.25rem; }
+  h1 { color: var(--accent); font-size: 1.6rem; }
+  a { color: var(--accent); }
+  pre { background: var(--code-bg); padding: .9rem 1rem; border-radius: 6px;
+        overflow-x: auto; font-size: .85rem; }
+  footer { margin-top: 3rem; font-size: .85rem; opacity: .7; }
+</style>
+</head>
+<body>
+<h1>Amber Linux apt archive</h1>
+<p>Signed Debian packages for the Amber Linux suite, for Linux Mint 22+
+and other Ubuntu&nbsp;noble derivatives.</p>
+
+<p><strong><a href="https://amberlinux.org/packages/">Browse the packages
+and what they do &rarr;</a></strong></p>
+
+<h2>Install</h2>
+<pre>sudo curl -fsSL https://apt.amberlinux.org/amberlinux-archive-keyring.gpg \
+  -o /usr/share/keyrings/amberlinux-archive-keyring.gpg
+
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/amberlinux-archive-keyring.gpg] https://apt.amberlinux.org amber main' \
+  | sudo tee /etc/apt/sources.list.d/amberlinux.list
+
+sudo apt update</pre>
+
+<footer>
+  <a href="https://amberlinux.org/">amberlinux.org</a> &middot;
+  suite <code>amber</code>, component <code>main</code> &middot;
+  machine-readable index: <a href="/packages.json">packages.json</a>
+</footer>
+</body>
+</html>

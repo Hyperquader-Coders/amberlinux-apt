@@ -1,0 +1,15 @@
+# Every response pins TLS: the worker 301s http to https, and HSTS keeps a
+# client from ever asking over plain HTTP again. The worker sets the same
+# header on what it serves from R2.
+/*
+  Strict-Transport-Security: max-age=31536000
+
+# dists/ must revalidate: a cached InRelease against a fresh Packages is
+# exactly the mismatch that makes apt report a hash failure.
+/dists/*
+  Cache-Control: no-cache
+/amberlinux-archive-keyring.gpg
+  Cache-Control: public, max-age=3600
+/packages.json
+  Cache-Control: no-cache
+  Access-Control-Allow-Origin: *

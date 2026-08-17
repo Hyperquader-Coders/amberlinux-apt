@@ -1,0 +1,11 @@
+Origin: AmberLinux
+Label: AmberLinux
+Codename: amber
+Suite: amber
+Version: 1.0
+# Linux Mint 22+ is Ubuntu noble. 'all' must NOT be listed: reprepro rejects it and
+# folds Architecture: all packages (amber-models) into every listed binary index.
+Architectures: amd64
+Components: main
+Description: Amber Linux suite (amberlin, ambrosia, copal, kat800) for Linux Mint 22+
+SignWith: 481A11AA548332196B290D09C5B067A799C43065

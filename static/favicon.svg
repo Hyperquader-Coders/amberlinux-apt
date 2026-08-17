@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Amber Linux: an amber block with a mint-green core">
+  <defs>
+    <radialGradient id="amber" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#f5e080"/>
+      <stop offset="45%" stop-color="#f5a623"/>
+      <stop offset="100%" stop-color="#8a4a00"/>
+    </radialGradient>
+  </defs>
+  <!-- the amber block -->
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="url(#amber)" stroke="#6e3000" stroke-width="6"/>
+  <!-- simple green core: reads at 16px where a leaf cannot -->
+  <ellipse cx="64" cy="66" rx="27" ry="33" transform="rotate(-18 64 66)" fill="#3c6b33"/>
+  <!-- specular -->
+  <ellipse cx="42" cy="34" rx="20" ry="11" fill="#ffffff" opacity="0.35" transform="rotate(-24 42 34)"/>
+</svg>
