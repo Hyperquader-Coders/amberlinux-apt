@@ -20,7 +20,7 @@ REMOTE   ?= origin
 # credentials are set — so a missing token stops the deploy with the previous index
 # still live, rather than publishing one that names a pool file nothing can serve.
 # Which of its packages ship is that repo'"'"'s decision, next to the packages.
-SUITE ?= ../amber-fonts ../amber-gtk4 ../amber-theme ../amber-desktop ../kat800 ../ambrosia ../copal ../amberlin ../amberlin-backend ../amberlin-runtime ../amber-odin ../amber-models
+SUITE ?= ../amber-fonts ../amber-gtk4 ../amber-theme ../amber-desktop ../kat800 ../ambrosia ../copal ../amberlin ../amberlin-backend ../amberlin-runtime ../amber-odin ../amber-models ../amberlin-settings
 
 # The flatpak archive is a sibling, published from this machine too: the signing
 # key lives in ~/.gnupg here and nowhere else, so both archives are deployed from
