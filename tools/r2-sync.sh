@@ -31,7 +31,15 @@ put_large() { # key file
 		echo "  R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY, then re-run." >&2
 		exit 3
 	fi
-	command -v aws >/dev/null || { echo "r2-sync: aws CLI required for multipart (pip install awscli)" >&2; exit 3; }
+	# The tree provisions awscli itself (the root mise.toml's [tools]), so a
+	# missing `aws` almost always means this ran outside mise rather than that
+	# anything needs installing — say that instead of sending the operator off to
+	# pip, which would leave a second copy shadowing the pinned one.
+	command -v aws >/dev/null || {
+		echo "r2-sync: no aws on PATH. It is provisioned by the tree's mise.toml —" >&2
+		echo "  run this under mise (\`mise exec -- make deploy\`) or from a mise shell." >&2
+		exit 3
+	}
 	# Three environment settings, none of them optional against R2:
 	#
 	#   AWS_DEFAULT_REGION  R2 has no regions but the S3 protocol demands one, and the CLI

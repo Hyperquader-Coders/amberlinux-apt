@@ -60,7 +60,8 @@ ingested; this is where it was built.
 | `amber-theme` | `amber-theme` | `make deb` (Dart Sass compiles five profiles of GTK3/GTK4/libadwaita/Cinnamon CSS, `build-icons.sh` recolours the folder icon themes, both staged into `out/deb`) | `dist/amber-theme_<v>-1_all.deb` |
 | `amberlin` | `amberlin` | `make deb` (Odin/GTK4 → `out/deb` staging) | `dist/amberlin_<v>-1_amd64.deb` |
 | `amberlin-backend` | `amberlin-backend` | `make deb` (Odin/GLib D-Bus service; models load at runtime) | `dist/amberlin-backend_<v>-1_amd64.deb` |
-| `amber-models` | `amber-models-tts`, `amber-models-stt` | `make deb` (`dpkg-buildpackage`, six sha256-pinned upstream artefacts staged into `out/models`; the voices and the LM vocabulary generated from them) | `dist/amber-models-{tts,stt}_<v>-<r>_all.deb` |
+| `amberlin-settings` | `amberlin-settings` | `make deb` (Odin/GTK4, unstripped and linked `-rdynamic` so the crash log can name its own frames; GTK comes from `amber-gtk4`, the model catalogue from `amberlin-backend`) | `dist/amberlin-settings_<v>-1_amd64.deb` |
+| `amber-models` | `amber-models-tts`, `amber-models-stt`, `amber-models-llm`, `amber-models` | `make deb` (`dpkg-buildpackage`, six sha256-pinned upstream artefacts staged into `out/models`; the voices and the LM vocabulary generated from them, plus a metapackage that pulls all three modalities) | `dist/amber-models{,-tts,-stt,-llm}_<v>-<r>_all.deb` |
 | `amberlin-runtime` | `amberlin-runtime`, `amberlin-runtime-cuda`, `amberlin-runtime-dev` | `make deb` (`dpkg-buildpackage`, upstream ONNX Runtime CPU and GPU tarballs) | `dist/amberlin-runtime{,-cuda,-dev}_<v>-<r>_amd64.deb` |
 | `ambrosia` | `ambrosia` | `make deb` (Odin/GTK3 → `out/deb` staging) | `dist/ambrosia_<v>-1_amd64.deb` |
 | `copal` | `copal` | `make deb` (Odin/GTK3, rasterises the logo first) | `dist/copal_<v>-1_amd64.deb` |

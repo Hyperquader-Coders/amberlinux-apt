@@ -9,15 +9,15 @@ An empty band means that band is finished, not that it was never populated.
 
 ## Must have
 
-- **The multipart upload path depends on a tool nothing installs.** `tools/r2-sync.sh`
-  sends anything over wrangler's 300 MiB cap with `aws s3 cp` and exits 3 when the `aws`
-  CLI is absent, and no target in this repo or in `make deps` provides it.
-  `amber-models-llm` is 320 MiB, so the largest package in the archive is the one that
-  path carries. Install `awscli` from a target here and name it alongside the other
-  prerequisites, so the requirement is satisfied by the repo rather than by whatever
-  happens to be on the publisher's box.
-
 ## Should have
+
+- **`verify-fresh` has no way to say "this repo is mid-change, leave it".** It gates
+  `stage`, and it fails on any suite package whose repo builds different bytes — which is
+  the normal state of a repo someone is working in. Publishing one repo's fix therefore
+  means either republishing everyone's work in progress or narrowing `SUITE` by hand on
+  the command line, and the second is a judgement call made under pressure with no record
+  of what was skipped. A `HOLD` list read from a file, reported as `held` rather than
+  `STALE` and excluded from the failure count, makes the decision explicit and reviewable.
 
 - **`verify-fresh` compares hashes, so it cannot tell new content from a rebuild.** A
   repo that rebuilds byte-differently but pixel-identically reads as STALE. Measured on
