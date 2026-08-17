@@ -1,0 +1,22 @@
+# Repos whose packages may lag the archive without failing `verify-fresh`.
+#
+# A repo someone is actively working in builds different bytes than the archive
+# holds, every time. That is not a publishing mistake, but the freshness gate
+# cannot tell it apart from one — so without this list, shipping any single fix
+# means either republishing work in progress or narrowing SUITE by hand, which
+# leaves no record of what was skipped.
+#
+# A held repo is reported as `held` and excluded from the failure count. It is
+# NOT excluded from the archive: whatever version the pool already carries stays
+# published and keeps being served. Holding a repo pauses re-publication, it
+# does not withdraw anything.
+#
+# One repo directory name per line, as it appears in SUITE without the `../`.
+# Blank lines and `#` comments are ignored. Remove a name the moment its work
+# lands — a stale hold silently stops the gate doing its job for that repo, and
+# the report prints each held repo by name so that is visible rather than
+# forgotten.
+
+amberlin
+amberlin-backend
+amberlin-settings

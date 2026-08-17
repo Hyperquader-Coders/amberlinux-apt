@@ -137,3 +137,12 @@ fails `stage` when the archive is older. `verify-client.sh` cannot see this:
 a stale archive is signed, consistent and installable — it just serves
 yesterday's binary. A package absent from the archive is reported but does not
 fail, because apt tells the user immediately.
+
+`conf/hold` names repos whose packages may lag. A repo someone is working in
+builds different bytes every time, and the gate cannot tell that apart from a
+missed publish — so without the list, shipping one repo's fix means either
+republishing work in progress or narrowing `SUITE` on the command line, which
+records nothing about what was skipped. A held repo reports as `held` with both
+hashes, is excluded from the failure count, and is named in the summary line, so
+a hold is visible in a passing report rather than hidden by it. Holding pauses
+re-publication only: the version already in the pool stays published and served.
