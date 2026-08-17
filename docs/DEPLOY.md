@@ -210,7 +210,7 @@ files. The per-file cap already is:
 
 | Package | Size today | |
 | --- | --- | --- |
-| `amber-models-llm` | **320 MB** (Qwen2.5-0.5B int8) | **over the cap** |
+| `amber-models-llm` | **320 MB** (Qwen2.5-0.5B int8) | **over the cap, and over wrangler's 300 MiB CLI ceiling too — the only file needing S3 multipart** |
 | `amber-models-tts` | **80 MB** (Kokoro int8 + 54 voices) | **over the cap** |
 | `amberlin-runtime-cuda` | **123.3 MB** | **over the cap** |
 | `kat800` | 16.7 MB (bundles VTE and GTK) | 8 MB of headroom, and growing |

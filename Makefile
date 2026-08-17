@@ -13,11 +13,13 @@ REMOTE   ?= origin
 # Every suite repo that produces a .deb. Each answers `make deb-path` with one
 # absolute path per package it publishes, so the archive never hardcodes another
 # repo's output layout. The contract is docs/PACKAGING.md.
-# amber-models is in, and publishes two of its four packages: its `deb-path` answers
-# with TTS and STT only. The 320 MiB LLM is past wrangler's 300 MiB object cap, and
-# the metapackage Depends on it, so both stay out of `deb-path` there until an R2 API
-# token and the aws CLI make multipart upload possible. That decision lives in that
-# repo, next to the packages, rather than as an omission from this list.
+# amber-models publishes all four of its packages, the 320 MiB LLM included. That one
+# is past wrangler's 300 MiB object cap and reaches R2 by S3 multipart instead, which
+# needs an R2 API token (tools/r2-sync.sh). `make deploy` runs that sync BEFORE
+# deploying the worker, and it exits non-zero when a file needs multipart and no
+# credentials are set — so a missing token stops the deploy with the previous index
+# still live, rather than publishing one that names a pool file nothing can serve.
+# Which of its packages ship is that repo'"'"'s decision, next to the packages.
 SUITE ?= ../amber-fonts ../amber-gtk4 ../amber-theme ../amber-desktop ../kat800 ../ambrosia ../copal ../amberlin ../amberlin-backend ../amberlin-runtime ../amber-odin ../amber-models
 
 # The flatpak archive is a sibling, published from this machine too: the signing

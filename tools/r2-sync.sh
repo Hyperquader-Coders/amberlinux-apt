@@ -32,7 +32,19 @@ put_large() { # key file
 		exit 3
 	fi
 	command -v aws >/dev/null || { echo "r2-sync: aws CLI required for multipart (pip install awscli)" >&2; exit 3; }
+	# Three environment settings, none of them optional against R2:
+	#
+	#   AWS_DEFAULT_REGION  R2 has no regions but the S3 protocol demands one, and the CLI
+	#                       refuses to sign without it. `auto` is the value R2 documents.
+	#   *_CHECKSUM_*        aws-cli v2 sends CRC32 full-object checksums on multipart by
+	#                       default, which R2 rejects outright. `when_required` stops the
+	#                       CLI volunteering them. Untested here — no token existed when
+	#                       this was written — so if a first upload fails on a header named
+	#                       x-amz-checksum-*, this is the line to look at.
 	AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY" \
+		AWS_DEFAULT_REGION=auto \
+		AWS_REQUEST_CHECKSUM_CALCULATION=when_required \
+		AWS_RESPONSE_CHECKSUM_VALIDATION=when_required \
 		aws s3 cp "$2" "s3://$BUCKET/$1" \
 		--endpoint-url "https://$ACCOUNT_ID.r2.cloudflarestorage.com" \
 		--content-type application/vnd.debian.binary-package >/dev/null
