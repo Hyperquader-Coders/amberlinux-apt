@@ -155,10 +155,19 @@ against the deployed tree, and is the post-deploy smoke test.
 ```
 
 `dists/` must revalidate: a cached `InRelease` paired with a fresh `Packages` is
-exactly the mismatch that makes apt report a hash failure. Pool paths contain
-the version, so their contents never change; the worker serves them
-`immutable` with a one-year cache — `_headers` only applies to static assets,
-so anything the worker serves gets its headers from the worker, HSTS included.
+exactly the mismatch that makes apt report a hash failure.
+
+The worker serves pool objects `immutable` with a one-year cache. That header is a
+claim about the **path**, not about the bytes behind it: while versions are held
+before v1 a rebuild republishes the same path with different content, so what keeps
+it safe is § Atomicity's argument — the worker reads R2 per request and its
+responses are not edge-cached — rather than the objects genuinely never changing.
+The header reaches clients and any intermediary cache, of which this archive has
+none; if one ever appears in front of it, that is the reason to bound the `max-age`.
+
+`_headers` only applies to static assets, so anything the worker serves gets its
+headers from the worker, HSTS included — a `/pool/*` rule added there would be
+silently ignored.
 
 TLS is enforced, not offered: the worker 301s plain HTTP to https and every
 response carries HSTS. Signatures prove origin, not freshness — on plain HTTP

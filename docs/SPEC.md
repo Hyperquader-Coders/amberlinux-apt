@@ -64,10 +64,16 @@ Guarantees:
 - `dists/amber/InRelease` is always clearsigned by the key above. An unsigned or
   differently-signed tree cannot be produced: `tools/preflight.sh` runs before
   every archive operation and refuses if the key cannot sign unattended.
-- A pool path is immutable. It contains the package version, `make add` only
-  ever adds, and a published version is superseded rather than removed — so a
-  client holding an older `Packages` can still fetch what it names. `make remove`
-  is the one operation that breaks this; see `DEPLOY.md` § Atomicity.
+- A pool path is **append-only**: `make add` only ever adds, and a published
+  version is superseded rather than removed, so a client holding an older
+  `Packages` can still fetch what it names. `make remove` is the one operation
+  that breaks this; see `DEPLOY.md` § Atomicity.
+- A pool path's **contents** are not fixed, and nothing here depends on them
+  being. Versions are held rather than bumped before v1, so a rebuilt package
+  republishes under the same path with different bytes. What makes that safe is
+  that the worker reads R2 on every request — `DEPLOY.md` § Atomicity has the
+  full argument. The name being stable and the bytes being stable are two
+  different claims and only the first one holds.
 - Index files are served byte-exact, with no redirect and no re-encoding. This
   is a property of the CDN rather than the tree, so it is asserted rather than
   assumed: `make verify-http BASE=…` checks it against whatever is deployed.
