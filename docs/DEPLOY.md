@@ -184,12 +184,16 @@ pool is the largest thing the suite serves.
 ## Atomicity
 
 **Greenfield exception: until Amberlin v1 ships, suite packages republish
-under the SAME version rather than bumping.** This is safe in the deployed architecture specifically because
-pool/** is served by the worker straight from R2 — worker responses are
-not edge-cached, so overwritten objects serve immediately; the immutable
-Cache-Control only reaches clients, and apt does not cache debs. The
-moment real users exist, versions bump again and the rule below is the
-rule.
+under the SAME version rather than bumping.** This is safe in the deployed
+architecture specifically because pool/** is served by the worker straight from
+R2 — worker responses are not edge-cached, so overwritten objects serve
+immediately. The immutable Cache-Control reaches clients and any intermediary
+cache, and apt is not one: it keeps downloaded debs in
+`/var/cache/apt/archives`, but decides whether to reuse one by comparing it
+against the index's size and hash rather than by revalidating over HTTP — which
+is why a superseded deb is re-fetched and rejected on size, not served from the
+cache. The moment real users exist, versions bump again and the rule below is
+the rule.
 
 A `wrangler deploy` swaps to a new version atomically, but an apt client's work
 is not one request. It fetches `InRelease`, then `Packages`, then — possibly
