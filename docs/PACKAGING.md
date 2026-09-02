@@ -87,7 +87,7 @@ is 123 MB and does not fit under Cloudflare's 25 MiB per-file cap — see
 into a blocker on the first upload.
 
 The model weights are the archive's largest packages by two orders of magnitude —
-677 MB of Kokoro, Moonshine and Qwen2.5 across three, and the only
+587 MB of Kokoro, Moonshine and Qwen2.5 across three, and the only
 `Architecture: all` ones. They are split by modality rather than shipped as one
 package because the three change at entirely different rates, and because a
 speech-only machine has no reason to carry a language model.
