@@ -1,8 +1,9 @@
 # amberlinux-apt
 
 The apt repository for the **Amber Linux** suite — [amberlin](../amberlin),
-[ambrosia](../ambrosia), [copal](../copal), [kat800](../kat800) and
-[amberlin-runtime](../amberlin-runtime). Built with **reprepro** in the standard
+[ambrosia](../ambrosia), [copal](../copal), [kat800](../kat800),
+[amberlin-broker](../amberlin-broker), [amberlin-tools](../amberlin-tools),
+[amberlin-inspector](../amberlin-inspector) and [amberlin-runtime](../amberlin-runtime). Built with **reprepro** in the standard
 Debian pool layout, signed with the Amber Linux archive key, and published as a
 plain static tree to **https://apt.amberlinux.org/**.
 

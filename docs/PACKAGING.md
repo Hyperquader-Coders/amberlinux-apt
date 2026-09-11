@@ -60,6 +60,8 @@ ingested; this is where it was built.
 | `amber-theme` | `amber-theme` | `make deb` (Dart Sass compiles five profiles of GTK3/GTK4/libadwaita/Cinnamon CSS, `build-icons.sh` recolours the folder icon themes, both staged into `out/deb`) | `dist/amber-theme_<v>-1_all.deb` |
 | `amberlin` | `amberlin` | `make deb` (Odin/GTK4 → `out/deb` staging) | `dist/amberlin_<v>-1_amd64.deb` |
 | `amberlin-broker` | `amberlin-broker` | `make deb` (Odin/GLib D-Bus service; models load at runtime) | `dist/amberlin-broker_<v>-1_amd64.deb` |
+| `amberlin-tools` | `amberlin-tools` | `make deb` (Go, `CGO_ENABLED=0 -trimpath`, so the package depends on nothing; a per-user systemd unit and an autostart entry, so the broker finds it at `127.0.0.1:8378` from login) | `dist/amberlin-tools_<v>-1_amd64.deb` |
+| `amberlin-inspector` | `amberlin-inspector` | `make deb` (Go, static as above, web UI and font embedded; a per-user unit that is not autostarted — a developer's instrument in front of SGLang) | `dist/amberlin-inspector_<v>-1_amd64.deb` |
 | `amberlin-settings` | `amberlin-settings` | `make deb` (Odin/GTK4, unstripped and linked `-rdynamic` so the crash log can name its own frames; GTK comes from `amber-gtk4`, the model catalogue from `amberlin-broker`) | `dist/amberlin-settings_<v>-1_amd64.deb` |
 | `amber-models` | `amber-models-tts`, `amber-models-stt`, `amber-models-llm`, `amber-models` | `make deb` (`dpkg-buildpackage`, six sha256-pinned upstream artefacts staged into `out/models`; the voices and the LM vocabulary generated from them, plus a metapackage that pulls all three modalities) | `dist/amber-models{,-tts,-stt,-llm}_<v>-<r>_all.deb` |
 | `amberlin-runtime` | `amberlin-runtime`, `amberlin-runtime-cuda`, `amberlin-runtime-dev` | `make deb` (`dpkg-buildpackage`, upstream ONNX Runtime CPU and GPU tarballs) | `dist/amberlin-runtime{,-cuda,-dev}_<v>-<r>_amd64.deb` |
@@ -111,6 +113,11 @@ Recorded rather than forced.
   naming and reads as "install the app" to everyone else, so both exist.
 - **kat800 has no CI workflow.** `make ci` is the whole gate there.
 - **amberlin-runtime's `build` is `fetch`.** It compiles nothing of its own.
+- **amberlin-tools and amberlin-inspector stamp two versions.** `make build` stamps
+  `git describe` into the binary, which is what their CI and GitHub releases carry;
+  `make deb` stamps `DEB_VERSION` (the release, `0.1.0`), because `deb-path` must
+  name the package before anything is built and a describe string changes with the
+  working tree.
 - **amberlin-runtime publishes three packages.** The CPU runtime, the CUDA
   variant, and `amberlin-runtime-dev` — the unversioned `libonnxruntime.so`
   symlink, which the runtime packages omit because only a compiler needs it.
