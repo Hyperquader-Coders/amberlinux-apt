@@ -60,7 +60,7 @@ ingested; this is where it was built.
 | `amber-theme` | `amber-theme` | `make deb` (Dart Sass compiles five profiles of GTK3/GTK4/libadwaita/Cinnamon CSS, `build-icons.sh` recolours the folder icon themes, both staged into `out/deb`) | `dist/amber-theme_<v>-1_all.deb` |
 | `amberlin` | `amberlin` | `make deb` (Odin/GTK4 → `out/deb` staging) | `dist/amberlin_<v>-1_amd64.deb` |
 | `amberlin-broker` | `amberlin-broker` | `make deb` (Odin/GLib D-Bus service; models load at runtime) | `dist/amberlin-broker_<v>-1_amd64.deb` |
-| `amberlin-tools` | `amberlin-tools` | `make deb` (Go, `CGO_ENABLED=0 -trimpath`, so the package depends on nothing; a per-user systemd unit and an autostart entry, so the broker finds it at `127.0.0.1:8378` from login) | `dist/amberlin-tools_<v>-1_amd64.deb` |
+| `amberlin-tools` | `amberlin-tools` | `make deb` (Go, `CGO_ENABLED=0 -trimpath`, so the package depends on nothing; a per-user systemd unit and an autostart entry, so the broker finds it at `127.0.0.1:5190` from login) | `dist/amberlin-tools_<v>-1_amd64.deb` |
 | `amberlin-inspector` | `amberlin-inspector` | `make deb` (Go, static as above, web UI and font embedded; a per-user unit that is not autostarted — a developer's instrument in front of SGLang) | `dist/amberlin-inspector_<v>-1_amd64.deb` |
 | `amberlin-settings` | `amberlin-settings` | `make deb` (Odin/GTK4, unstripped and linked `-rdynamic` so the crash log can name its own frames; GTK comes from `amber-gtk4`, the model catalogue from `amberlin-broker`) | `dist/amberlin-settings_<v>-1_amd64.deb` |
 | `amber-models` | `amber-models-tts`, `amber-models-stt`, `amber-models-llm`, `amber-models` | `make deb` (`dpkg-buildpackage`, six sha256-pinned upstream artefacts staged into `out/models`; the voices and the LM vocabulary generated from them, plus a metapackage that pulls all three modalities) | `dist/amber-models{,-tts,-stt,-llm}_<v>-<r>_all.deb` |
@@ -68,6 +68,21 @@ ingested; this is where it was built.
 | `ambrosia` | `ambrosia` | `make deb` (Odin/GTK3 → `out/deb` staging) | `dist/ambrosia_<v>-1_amd64.deb` |
 | `copal` | `copal` | `make deb` (Odin/GTK3, rasterises the logo first) | `dist/copal_<v>-1_amd64.deb` |
 | `kat800` | `kat800` | `make deb` (Odin/GTK4; bundles VTE 0.84 from `make vte`, GTK comes from `amber-gtk4`) | `dist/kat800_<v>-1_amd64.deb` |
+
+## Ports
+
+The suite's services listen on loopback in one range, **5190–5199**: `amber`
+summed as ASCII (`a`+`m`+`b`+`e`+`r` = 97+109+98+101+114) is 519. The range is
+unregistered in `/etc/services` and below Linux's ephemeral ports, so nothing
+else on a desktop takes one by accident.
+
+| Port | Service | Who calls it |
+| --- | --- | --- |
+| `5190` | `amberlin-tools` | amberlin-broker (`tools.url`), xuetu, amber-tools |
+| `5191` | `amberlin-inspector` | a developer's client, in front of SGLang |
+| `5192`–`5199` | unassigned | the next suite service takes the next number |
+
+A new service takes the next free number here first, then its own default.
 
 ## Not ingested
 
