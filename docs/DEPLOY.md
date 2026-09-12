@@ -195,18 +195,6 @@ is why a superseded deb is re-fetched and rejected on size, not served from the
 cache. The moment real users exist, versions bump again and the rule below is
 the rule.
 
-What a client sees of a same-version rebuild is decided by apt's cache, not by
-the bytes. apt merges an installed record and an index record into one version
-only when the version string **and** a hash of the relationship fields (Depends,
-Pre-Depends, Conflicts, Breaks, Replaces, Provides, architecture) agree. So a
-rebuild whose dependencies did not change is invisible: `apt upgrade` offers
-nothing and the client keeps what it has. A rebuild whose dependencies did change
-is a second version with the same name, and the repository's copy is preferred
-(pinned 500 against the installed 100), so `apt upgrade` installs it — shown as
-an upgrade, or a downgrade, at the same number. Both are tolerable while the only
-clients are the machines that build the packages; neither is acceptable for a
-user, which is the second reason versions bump from v1 on.
-
 A `wrangler deploy` swaps to a new version atomically, but an apt client's work
 is not one request. It fetches `InRelease`, then `Packages`, then — possibly
 days later, on `apt install` — a pool file.

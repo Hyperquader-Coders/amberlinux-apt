@@ -46,23 +46,6 @@ way round.
 
 `out/` must be in `.gitignore` before it exists — `force-push` runs `git add -A`.
 
-## Versions
-
-Every package carries `<upstream>-<revision>`. Until Amberlin v1 ships, a rebuild
-of unchanged upstream version republishes under the **same** number: the archive's
-`add-suite` removes the held copy and re-includes the new bytes, and
-`DEPLOY.md` § Atomicity says why the deployed shape makes that safe. What it costs
-is on the client: apt tells two same-numbered builds apart only by their
-relationship fields, so a rebuild with unchanged dependencies never reaches an
-installed machine through `apt upgrade`, and one with changed dependencies
-arrives as an "upgrade" to the same number. Both are accepted pre-v1.
-
-**From v1 on, every published rebuild bumps the Debian revision** — `DEB_REV`
-where a repo has it, the `-1` in `packaging/control.in` where it does not — and a
-repo's `check` target refuses to build a package whose version is already in the
-archive. That is the ordinary Debian rule; the pre-v1 hold is the exception, and
-this section is where it ends.
-
 ## Provenance
 
 Where each package in the archive comes from. `make list` is what is actually
