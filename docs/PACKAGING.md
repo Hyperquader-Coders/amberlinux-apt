@@ -62,6 +62,7 @@ ingested; this is where it was built.
 | `amberlin-broker` | `amberlin-broker` | `make deb` (Odin/GLib D-Bus service; models load at runtime) | `dist/amberlin-broker_<v>-1_amd64.deb` |
 | `amberlin-tools` | `amberlin-tools` | `make deb` (Go, `CGO_ENABLED=0 -trimpath`, so the package depends on nothing; a per-user systemd unit and an autostart entry, so the broker finds it at `127.0.0.1:5190` from login) | `dist/amberlin-tools_<v>-1_amd64.deb` |
 | `amberlin-inspector` | `amberlin-inspector` | `make deb` (Go, static as above, web UI and font embedded; a per-user unit that is not autostarted — a developer's instrument in front of SGLang) | `dist/amberlin-inspector_<v>-1_amd64.deb` |
+| `amberlin-calendar` | `amberlin-calendar` | `make deb` (Go, static as above, web UI and font embedded; a per-user unit tied to the graphical session with D-Bus activation and an autostart entry, because GOA and the keyring live there) | `dist/amberlin-calendar_<v>-1_amd64.deb` |
 | `amberlin-settings` | `amberlin-settings` | `make deb` (Odin/GTK4, unstripped and linked `-rdynamic` so the crash log can name its own frames; GTK comes from `amber-gtk4`, the model catalogue from `amberlin-broker`) | `dist/amberlin-settings_<v>-1_amd64.deb` |
 | `amber-models` | `amber-models-tts`, `amber-models-stt`, `amber-models-llm`, `amber-models` | `make deb` (`dpkg-buildpackage`, six sha256-pinned upstream artefacts staged into `out/models`; the voices and the LM vocabulary generated from them, plus a metapackage that pulls all three modalities) | `dist/amber-models{,-tts,-stt,-llm}_<v>-<r>_all.deb` |
 | `amberlin-runtime` | `amberlin-runtime`, `amberlin-runtime-cuda`, `amberlin-runtime-dev` | `make deb` (`dpkg-buildpackage`, upstream ONNX Runtime CPU and GPU tarballs) | `dist/amberlin-runtime{,-cuda,-dev}_<v>-<r>_amd64.deb` |
@@ -80,7 +81,8 @@ else on a desktop takes one by accident.
 | --- | --- | --- |
 | `5190` | `amberlin-tools` | amberlin-broker (`tools.url`), xuetu, amber-tools |
 | `5191` | `amberlin-inspector` | a developer's client, in front of SGLang |
-| `5192`–`5199` | unassigned | the next suite service takes the next number |
+| `5192` | `amberlin-calendar` | the calendar page at `http://127.0.0.1:5192/`; the bus service `org.hyperquader.AmberlinCalendar1` |
+| `5193`–`5199` | unassigned | the next suite service takes the next number |
 
 A new service takes the next free number here first, then its own default.
 
